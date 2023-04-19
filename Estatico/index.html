@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>**Enrutamiento estatico** - Documentación Practicas Par</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">Documentación Practicas Par</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Inicio</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Routing <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="./" class="dropdown-item active">**Enrutamiento estatico**</a>
+</li>
+                                    
+<li>
+    <a href="../Dinamico/" class="dropdown-item">**Enrutamiento dinamico**</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href=".." class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../Dinamico/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#enrutamiento-estatico" class="nav-link">Enrutamiento estatico</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#ejemplo" class="nav-link">Ejemplo:</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#comandos-config-routing" class="nav-link">Comandos config routing</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="enrutamiento-estatico"><strong>Enrutamiento estatico</strong></h1>
+<h2 id="ejemplo"><em>Ejemplo</em>:</h2>
+<p><img alt="Imagen ejemplo ejercicio Routing estatico" src="../images/Ej_Routing_Jerez_Gr.png" /></p>
+<h2 id="comandos-config-routing"><em>Comandos config routing</em></h2>
+<p>ANTES QUE TODO: ANOTAR LAS SUBREDES Y LAS DIRECCIONES IPs DE CADA LAN.</p>
+<p>En el router izquierdo (Jerez) configurar las interfaces gigabit según su correspondiente LAN</p>
+<pre><code>Jerez   Router&gt;ena
+
+Jerez   Router#conf terminal
+
+Jerez   Router(config)#hostname Jerez
+
+Jerez   Jerez(config)#interface gigabitEthernet 0/0
+
+Jerez   Jerez(config-if)#ip address 192.168.1.1 255.255.255.128
+
+Jerez   Jerez(config-if)#description LAN Cuartillo
+
+Jerez   Jerez(config-if)#no shutdown
+
+
+Jerez   Jerez(config-if)#interface gigabitEthernet 0/1
+
+Jerez   Jerez(config-if)#ip address 192.168.1.129 255.255.255.128
+
+Jerez   Jerez(config-if)#description LAN San Isidro
+
+Jerez   Jerez(config-if)#no shutdown
+
+Jerez   Jerez(config-if)#end
+
+Jerez   Jerez#sh run
+
+Jerez   Jerez#sh ip route
+</code></pre>
+<p>Probamos algunos Ping hacia los host de las 2 LANs para comprobar la configuración</p>
+<pre><code>Jerez   Jerez#ping 192.168.1.2
+
+Jerez   Jerez#ping 192.168.1.130
+
+Jerez   Jerez#sh ip route
+</code></pre>
+<p>A continuación, configuramos el router derecho (Granada)</p>
+<pre><code>Granada   Router&gt;ena
+
+Granada   Router#conf ter
+
+Granada   Router(config)#hostname Granada
+
+Granada   Granada(config)#interface gigabitEthernet 0/0
+
+Granada   Granada(config-if)#description Sierra Nevada
+
+Granada   Granada(config-if)#ip address 192.168.2.1 255.255.255.128
+
+Granada   Granada(config-if)#no shutdown
+
+Granada   Granada(config-if)#interface gigabitEthernet 0/1
+
+Granada   Granada(config-if)#description Generalife
+
+Granada   Granada(config-if)#ip address 192.168.2.129 255.255.255.128
+
+Granada   Granada(config-if)#no shutdown
+
+Granada   Granada(config-if)#end
+
+Granada   Granada#sh running-config
+
+Granada   Granada#sh ip route
+</code></pre>
+<p>Ahora es el turno de la LAN entre los dos routers (el enlace punto a punto). Tenemos que configurar los dos extremos, uno en el router de Jerez y el otro en el de Granada</p>
+<pre><code>Jerez   Jerez#conf terminal
+
+Jerez   Jerez(config)#interface serial 0/0/0
+
+Jerez   Jerez(config-if)#ip address 192.168.3.1 255.255.255.252
+
+Jerez   Jerez(config-if)#description Serial Jerez&lt;-&gt;Granada
+
+Jerez   Jerez(config-if)#no shutdown
+
+Jerez   Jerez(config-if)#end
+
+Jerez   Jerez#sh running-config
+
+Granada   Granada#conf terminal
+
+Granada   Granada(config)#interface serial 0/0/0
+
+Granada   Granada(config-if)#ip address 192.168.3.2 255.255.255.252
+
+Granada   Granada(config-if)#description Serial Granada-Jerez
+
+Granada   Granada(config-if)#no shutdown
+
+Granada   Granada(config-if)#end
+
+Granada   Granada#sh ip route
+</code></pre>
+<p>Ping al router de Granada</p>
+<pre><code>Jerez   Jerez#ping 192.168.3.2
+
+Jerez   Jerez#sh ip route
+</code></pre>
+<p>Ping a uno de lo hosts de una LAN de Granada</p>
+<pre><code>Jerez   Jerez#ping 192.168.2.1
+
+Jerez   Jerez#sh ip route
+</code></pre>
+<p>Especificamos la ruta estatica para llegar desde la LAN de Jerez hasta la LAN de Granada</p>
+<pre><code>Jerez   Jerez&gt;enable
+
+Jerez   Jerez#conf terminal
+
+Jerez   Jerez(config)#ip route ?
+
+Jerez   Jerez(config)#ip route 192.168.2.0 ?
+
+Jerez   Jerez(config)#ip route 192.168.2.0 255.255.255.128
+
+Jerez   Jerez(config)#ip route 192.168.2.0 255.255.255.128 ?
+
+Jerez   Jerez(config)#ip route 192.168.2.0 255.255.255.128 192.168.3.2
+
+Jerez   Jerez(config)#end
+
+Jerez   Jerez#sh ip route
+
+Jerez   Jerez#conf terminal
+
+Jerez   Jerez#sh ip route static
+
+Jerez   Jerez#sh ip route connected
+</code></pre>
+<p>Especificamos, esta vez, la ruta desde la LAN de Granada hasta Jerez</p>
+<pre><code>Granada   Granada&gt;ena
+
+Granada   Granada#conf ter
+
+Granada   Granada(config)#ip route ?
+
+Granada   Granada(config)#ip route 192.168.1.0 255.255.
+
+
+Granada   Granada(config)#ip route 192.168.1.0 255.255.255.0 192.168.3.1
+
+Granada   Granada(config)#end
+
+Granada   Granada#sh ip route
+
+Granada   Granada&gt;ena
+</code></pre>
+<p>Una vez configurada la red interna de la empresa, toca ahora configurar la salida al exterior (al ISP) dando una IP al interfaz de salida del router (en este caso, es Granada)</p>
+<pre><code>Granada   Granada#conf ter
+
+Granada   Granada(config)#interface serial 0/0/1
+
+Granada   Granada(config-if)#ip address 172.30.16.2 255.255.255.252
+
+Granada   Granada(config-if)#description serial to ISP
+
+Granada   Granada(config-if)#no shutdown
+
+Granada   Granada(config-if)#end
+
+Granada   Granada#sh ip route
+</code></pre>
+<p>Configuramos lógicamente, el interfaz del ISP que conecta al exterior con la empresa</p>
+<pre><code>ISP   Router&gt;ena
+
+ISP   Router#conf terminal
+
+ISP   Router(config)#hostname ISP
+
+ISP   ISP(config)#interface serial 0/0/1
+
+ISP   ISP(config-if)#ip address 172.30.16.1 255.255.255.252
+
+ISP   ISP(config-if)#description serial to ASIR empresa
+
+ISP   ISP(config-if)#no shutdown
+
+ISP   ISP(config-if)#exit
+</code></pre>
+<p>Configuramos dos interfaces de loopback como ejemplo</p>
+<pre><code>ISP   ISP(config)#interface loopback 1
+
+ISP   ISP(config-if)#ip address 193.147.162.1 255.255.255.0
+
+ISP   ISP(config-if)#interface loopback 2
+
+ISP   ISP(config-if)#ip address 8.8.8.8 255.255.255.0
+
+ISP   ISP(config-if)#end
+
+ISP   ISP#sh run
+
+ISP   ISP#ping 8.8.8.8
+</code></pre>
+<p>Por último, debemos configurar la ruta por defecto. Los routers mandan por esta ruta los paquetes con IPs que no se conozcan en la red interna.
+Esta ruta se configura en todos los routers de la red interna, con el objetivo de que sepan por qué camino mandar los paquetes con rutas desconocidas para ellos.</p>
+<pre><code>Granada   Granada#conf ter
+
+Granada   Granada(config)#ip route 0.0.0.0 0.0.0.0 serial 0/0/1 //Es recomendable poner la ruta del siguiente salto en lugar del interfaz
+
+Granada   Granada#sh ip route
+</code></pre>
+<p>En el caso de Jerez, la ruta por defecto es la ruta hacia granada, pues es granada el router que conecta con el exterior</p>
+<pre><code>Jerez   Jerez&gt;ena
+
+Jerez   Jerez#sh ip route
+
+Jerez   Jerez#conf ter
+
+Jerez   Jerez(config)#ip route 0.0.0.0 0.0.0.0 192.168.3.2
+
+Jerez   Jerez(config)#end
+
+Jerez   Jerez#sh ip route
+
+Jerez   Jerez#conf ter
+
+Jerez   Jerez(config)#no ip route 0.0.0.0 0.0.0.0 192.168.3.2
+
+Jerez   Jerez(config)#ip route 0.0.0.0 0.0.0.0 192.168.3.2
+</code></pre>
+<p>Además, podemos agrupar direcciones para simplificar el enrutamiento desde el exterior a la empresa.
+En este caso, la empresa tenía un espacio de direcciones de /16 (255.255.0.0); por tanto todos los paquetes que tienen un 192.168.x.x, el ISP los manda por la IP
+172.30.16.2, que es la IP que conecta el ISP con el router frontera (granada)</p>
+<pre><code>ISP   ISP#sh ip route
+
+ISP   ISP#conf ter
+
+ISP   ISP(config)#ip route 192.168.0.0 255.255.0.0 172.30.16.2
+
+ISP   ISP(config)#sh ip route
+
+ISP   ISP(config)#end
+
+ISP   ISP#sh ip route
+
+ISP   ISP#sh ip route connected
+
+ISP   ISP#sh run
+</code></pre>
+<p>Esta parte, a priori, puede no tener sentido, ¿ Por qué quita las rutas de las LAN de Granada ( 192.168.2.0/128) ?
+Si lo pensamos bien, todas la rutas de las LANs de Jerez, tanto sean conocidas como si no, se deben mandar al router de
+Granada, es por ello que podemos quitarlas sin problemas.</p>
+<pre><code>Jerez   Jerez(config)#end
+
+Jerez   Jerez#sh ip route
+
+Jerez   Jerez#sh ip route static
+
+Jerez   Jerez#conf terminal
+
+Jerez   Jerez(config)#end
+
+Jerez   Jerez#sh run
+
+Jerez   Jerez#conf ter
+
+Jerez   Jerez(config)#no ip route 192.168.2.0 255.255.255.128 192.168.3.2
+
+Jerez   Jerez(config)#no ip route 192.168.2.128 255.255.255.128 192.168.3.2
+
+Jerez   Jerez(config)#end
+
+Jerez   Jerez#sh ip route static
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
